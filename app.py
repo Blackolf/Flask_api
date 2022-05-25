@@ -38,13 +38,7 @@ def api():
     f = open('./owid-covid-data.json', 'r')
     datas = json.load(f)
 
-    return_data = dict()
-    i = 0;
-    for data in datas.keys:
-        return_data[i] = data[i]
-        i = i+1
-
-    return jsonify(return_data)
+    return jsonify(list(datas.keys()))
 
 
 # FLASK_ENV="development"
