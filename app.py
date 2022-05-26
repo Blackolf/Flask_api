@@ -7,6 +7,19 @@ from flask import jsonify
 # https://pymongo.readthedocs.io/en/stable/tutorial.html
 # https://matplotlib.org/
 
+def generateToken(user,password):
+    print(f"generate token")
+
+
+def checkToken(token):
+    print(f"check token")
+
+
+def token_require(func):
+    def wrapper(*args,**kwargs):
+        print(f"decorator work")
+    return wrapper
+
 app = Flask(__name__)
 
 
