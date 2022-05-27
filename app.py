@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request , make_response
+from hashlib import blake2b
 import json
 
 from flask import jsonify
@@ -33,39 +34,47 @@ def token_verifie(func):
 app = Flask(__name__)
 
 
-@app.route('/')
-# this function return data in a plot format
-def main():  # put application's code here
-    # create a list of data to pass to the template
-    data = [
-        {'name': 'Alice', 'age': '25'},
-        {'name': 'Bob', 'age': '27'},
-        {'name': 'Charlie', 'age': '29'},
-    ]
-    # render the template with the data
-    return render_template('index.html', data=data)
+# @app.route('/')
+# # this function return data in a plot format
+# def main():  # put application's code here
+#     # create a list of data to pass to the template
+#     data = [
+#         {'name': 'Alice', 'age': '25'},
+#         {'name': 'Bob', 'age': '27'},
+#         {'name': 'Charlie', 'age': '29'},
+#     ]
+#     # render the template with the data
+#     return render_template('index.html', data=data)
 
-@app.route('/login')
+@app.route('/')
 def login():
     return render_template('login.html')
 
 @app.route('/validation',methods=['GET','POST'])
 def getToken():
+    data = dict()
     user_login = request.form['user_login']
 
     token = generateToken(user_login)
-    resp = make_response(render_template('/list_api'))
+    resp = make_response(render_template('/list_api.html',data=data))
     resp.set_cookie('token',token)
     resp.set_cookie('user_login',user_login)
+    data['token'] = token
+    data['user_login'] = user_login
 
-    return render_template('list_api.html') ;
+
+    return resp ;
 
 
 @app.route('/test')
 def test():
 
-    return """
-    qsdqs
+    cki_user_login =request.cookies.get('user_login')
+    cki_token =request.cookies.get('token')
+
+    return f"""
+    {cki_user_login}
+    {cki_token}
     """
 
 
