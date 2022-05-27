@@ -6,16 +6,13 @@ from flask import jsonify
 # https://pymongo.readthedocs.io/en/stable/tutorial.html
 # https://matplotlib.org/
 
-def generateToken(user,password):
-    print(f"generate token")
+def generateToken(user_login):
+    return blake2b(b"{user_login}").hexdigest();
 
 
 
-
-def checkTokenValidation(token):
-
+def checkTokenValidation(user_login,token):
     return compare_digest(blake2b(b'user_name:qsd,password:123').hexdigest(),res)
-    print(f"check token")
 
 
 def token_require(func):
@@ -42,21 +39,20 @@ def main():  # put application's code here
 def login():
     return render_template('login.html')
 
-@app.route('/getToken',methods=['GET','POST'])
+@app.route('/validation',methods=['GET','POST'])
 def getToken():
-    print(request.data)
-    return f"""
+    user_login = request.form['user_login']
+    token = generateToken(user_login)
+    resp = make_response(render_template('/list_api'))
+    resp.set_cookie('token',token)
+    resp.set_cookie('user_login',user_login)
+    return html ;
 
-    {request.form['user_login']}
-
-    """
 
 @app.route('/test')
 def test():
     f = open('./owid-covid-data.json', 'r')
     datas = json.load(f)
-    # for data in datas:
-    #     print(data)
 
     return render_template('test.html', data=[datas])
 
