@@ -16,7 +16,7 @@ def generateToken(user_login):
 def log_information(user):
     log_file = open('./logs.log','a+')
     date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    log_file.write(f'INFO - {user=} - {date} - {request.path} \n')
+    log_file.write(f'INFO - {date} - {user=} - {request.path} \n')
     log_file.close()
 
 
