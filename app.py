@@ -9,6 +9,11 @@ from flask import jsonify
 def generateToken(user_login):
     return blake2b(b"{user_login}").hexdigest();
 
+def log_information(user,fun):
+    log_file = open('./logs.log','w+')
+    log_file.write(f'INFO - {user=} - date - function')
+    log_file.close()
+
 
 
 def checkTokenValidation(user_login,token):
@@ -21,7 +26,7 @@ def token_verifie(func):
         cki_token =request.cookies.get('token')
         if checkTokenValidation(cki_user_login ,cki_token) == False:
             redirect('/login')
-
+        # log_information(user_login,func)
 
     return wrapper
 
