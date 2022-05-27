@@ -15,9 +15,14 @@ def checkTokenValidation(user_login,token):
     return compare_digest(blake2b(b'user_name:qsd,password:123').hexdigest(),res)
 
 
-def token_require(func):
+def token_verifie(func):
     def wrapper(*args,**kwargs):
-        print(f"decorator work")
+        cki_user_login =request.cookies.get('user_login')
+        cki_token =request.cookies.get('token')
+        if checkTokenValidation(cki_user_login ,cki_token) == False:
+            redirect('/login')
+
+
     return wrapper
 
 app = Flask(__name__)
@@ -51,10 +56,13 @@ def getToken():
 
 @app.route('/test')
 def test():
-    f = open('./owid-covid-data.json', 'r')
-    datas = json.load(f)
+    # f = open('./owid-covid-data.json', 'r')
+    # datas = json.load(f)
 
-    return render_template('test.html', data=[datas])
+
+    return """
+    qsdqs
+    """
 
 
 @app.route('/api/pays', methods=['GET', 'POST'])
