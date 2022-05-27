@@ -52,18 +52,17 @@ def login():
 @app.route('/validation',methods=['GET','POST'])
 def getToken():
     user_login = request.form['user_login']
+
     token = generateToken(user_login)
     resp = make_response(render_template('/list_api'))
     resp.set_cookie('token',token)
     resp.set_cookie('user_login',user_login)
-    return html ;
+
+    return render_template('list_api.html') ;
 
 
 @app.route('/test')
 def test():
-    # f = open('./owid-covid-data.json', 'r')
-    # datas = json.load(f)
-
 
     return """
     qsdqs
@@ -71,6 +70,7 @@ def test():
 
 
 @app.route('/api/pays', methods=['GET', 'POST'])
+@token_verifie
 def api():
     f = open('./owid-covid-data.json', 'r')
     datas = json.load(f)
